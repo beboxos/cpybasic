@@ -34,6 +34,7 @@ BEEP & PLAY are experimental and buggy for now
 - todo list : 
 - fix all bugs :) 
 - Play Wav files from disk (in progress)
+- SD card support
 - graphics 
 - network support
 - and all we can imagine 
