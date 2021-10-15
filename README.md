@@ -31,9 +31,9 @@ New commands added :
 
 BEEP & PLAY are experimental and buggy for now
 
-todo list : 
-fix all bugs :) 
-Play Wav files from disk (in progress)
-graphics 
-network support
-and all we can imagine 
+- todo list : 
+- fix all bugs :) 
+- Play Wav files from disk (in progress)
+- graphics 
+- network support
+- and all we can imagine 
