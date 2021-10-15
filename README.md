@@ -30,3 +30,10 @@ New commands added :
  - PLAY : make a note ex. 10 PLAY C#2 1, play do # 2nd octave during 1 sec
 
 BEEP & PLAY are experimental and buggy for now
+
+todo list : 
+fix all bugs :) 
+Play Wav files from disk (in progress)
+graphics 
+network support
+and all we can imagine 
