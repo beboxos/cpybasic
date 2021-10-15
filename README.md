@@ -15,3 +15,18 @@ over REPL serial interface.
 ![img](https://github.com/beboxos/circuitpython/blob/main/images/pybasic2.jpeg)
 
 Later, will be ported to other devices like WIO terminal, regular pyportal etc... 
+
+New commands added : 
+
+ - DIR : in main window list .bas files can't be used in programs
+ - NEOPIXEL : usage NEOPIXEL R G B (values 0 - 255)
+ - LIGHT : return value of light sensor
+ - PAUSE : make a pose in sec ex. PAUSE 0.5 for 30 seconds
+ - GETTTOUCH : wait for touch screen press and return coords x,y in string ex: 10 LET A$=GETTOUCH
+ - TOUCHX : non blocking, return x coord of touch screen -1 if no value
+ - TOUCHY : non blocking, return y coord of touch screen -1 if no value
+ - CLS : Clear screen
+ - BEEP : beep a sound BEEP Feq_in_hz Duration_in_Sec ex: BEEP 440 1 => 440 Hz for 1 sec
+ - PLAY : make a note ex. 10 PLAY C#2 1, play do # 2nd octave during 1 sec
+
+BEEP & PLAY are experimental and buggy for now
