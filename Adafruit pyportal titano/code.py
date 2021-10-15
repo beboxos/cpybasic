@@ -23,12 +23,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 while not i2c.try_lock():
     pass
 try:
-    cardkb = i2c.scan()[0]  # should return 95
-    if cardkb != 95:
-        print("!!! Check I2C config: " + str(i2c))
-        print("!!! CardKB not found. I2C device", cardkb,
-              "found instead.")
-        i2ckeyboard=False
+    cardkb = i2c.scan().index(95) # Thks to Kongduino ;) 
 except:
     i2ckeyboard=False
  
