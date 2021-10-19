@@ -25,9 +25,10 @@ New commands added :
  - GETTTOUCH : wait for touch screen press and return coords x,y in string ex: 10 LET A$=GETTOUCH
  - TOUCHX : non blocking, return x coord of touch screen -1 if no value
  - TOUCHY : non blocking, return y coord of touch screen -1 if no value
- - CLS : Clear screen
+ - CLS : Clear screen #reworked 19.10.2021
  - BEEP : beep a sound BEEP Feq_in_hz Duration_in_Sec ex: BEEP 440 1 => 440 Hz for 1 sec
  - PLAY : make a note ex. 10 PLAY C#2 1, play do # 2nd octave during 1 sec
+ - PRINTAT : print a string at coordinate ex: 10 PRINTAT 5 10 "Hello World" #add on 19.10.2021
 
 BEEP & PLAY are experimental and buggy for now
 
