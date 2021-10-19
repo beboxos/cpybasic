@@ -342,6 +342,9 @@ class BASICParser:
         elif self.__token.category == Token.PLAY:
             self.__play()
             return None
+        elif self.__token.category == Token.PRINTAT:
+            self.__printat()
+            return None
         else:
             # Ignore comments, but raise an error
             # for anything else
@@ -413,8 +416,22 @@ class BASICParser:
         time.sleep(p)
     
     def __cls(self):
-        for n in range(22):
-            print()
+        print(chr(27)+"[2J")
+
+    def __printat(self):
+        #print at x y String$
+        if len(self.__tokenlist)==4:
+            self.__advance()
+            self.__expr()
+            x = self.__operand_stack.pop()
+            self.__expr()
+            y = self.__operand_stack.pop()
+            self.__expr()
+            string = self.__operand_stack.pop()
+            print(chr(27)+"["+str(y)+";"+str(x)+"H", end="")
+            print(string, end="")
+        else:
+            print("Missing parameters ? \nSyntax is PRINTAT x y String$")
             
 
     def __printstmt(self):

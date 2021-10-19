@@ -17,16 +17,22 @@ from sys import stderr
 
 #addon BeBoX 09.10.2021 special version for Adafruit Pyportal
 i2ckeyboard=True
+
 import os, microcontroller
-import busio, board 
+import busio, board
 i2c = busio.I2C(board.SCL, board.SDA)
 while not i2c.try_lock():
     pass
 try:
-    cardkb = i2c.scan().index(95) # Thks to Kongduino ;) 
+    cardkb = i2c.scan()[0]  # should return 95
+    if cardkb != 95:
+        print("!!! Check I2C config: " + str(i2c))
+        print("!!! CardKB not found. I2C device", cardkb,
+              "found instead.")
+        i2ckeyboard=False
 except:
     i2ckeyboard=False
- 
+
 ESC = chr(27)
 NUL = '\x00'
 CR = "\r"
@@ -40,7 +46,15 @@ def ReadKey():
     try:
         c = b.decode()
     except:
-        c = ""
+        c = b
+    if c==b'\xb5':
+        c=chr(27)+"[1A"
+    if c==b'\xb6':
+        c=chr(27)+"[1B"
+    if c==b'\xb7':
+        c=chr(27)+"[1C"
+    if c==b'\xb4':
+        c=chr(27)+"[1D"        
     if c == CR:
         # convert CR return key to LF
         c = LF
@@ -93,14 +107,18 @@ _________________________________________________________________
     print("        Adafruit PyPortal Titano Edition by BeBoX (c)2021\r\n")
     lexer = Lexer()
     program = Program()
-
+    
+    # check if system is Read only
+    RO=False
+    
+    
     # Continuously accept user input and act on it until
     # the user enters 'EXIT'
     while True:
         if i2ckeyboard==True:
-            stmt = InputFromKB('> ')
+            stmt = InputFromKB(chr(187)+' ')
         else:
-            stmt = input('> ')
+            stmt = input(chr(187)+' ')
         #if no i2c keyboard take input from PC
 
         try:

@@ -127,8 +127,9 @@ class BASICToken:
         TOUCHX          = 94  # return x coord , -1 if no data
         TOUCHY          = 95  # return y coord , -1 if no data
         CLS             = 96  # clear screen
-        BEEP            = 97  # bip a sound BEEP Freq in Hz , duration in Sec
-        PLAY            = 98  # play note C1 to G6
+        BEEP            = 97  # bip a sound BEEP Freq in Hz , duration in Sec to debug
+        PLAY            = 98  # play note C1 to G6 to debug
+        PRINTAT         = 99  # print at x y "text"
 
         # Displayable names for each token category
         catnames = ['EOF', 'LET', 'LIST', 'PRINT', 'RUN',
@@ -148,7 +149,7 @@ class BASICToken:
         'RNDINT', 'OPEN', 'HASH', 'CLOSE', 'FSEEK', 'APPEND',
         'OUTPUT', 'RESTORE', 'RNDINT', 'TAB', 'SEMICOLON',
         'LEFT', 'RIGHT', 'DIR', 'NEOPIXEL', 'LIGHT', 'PAUSE', 'GETTOUCH', 'TOUCHX', 'TOUCHY',
-        'CLS', 'BEEP', 'PLAY']
+        'CLS', 'BEEP', 'PLAY', 'PRINTAT']
 
         smalltokens = {'=': ASSIGNOP, '(': LEFTPAREN, ')': RIGHTPAREN,
                        '+': PLUS, '-': MINUS, '*': TIMES, '/': DIVIDE,
@@ -187,7 +188,7 @@ class BASICToken:
                     'RESTORE': RESTORE, 'TAB': TAB,
                     'LEFT$': LEFT, 'RIGHT$': RIGHT, 'DIR':DIR, 'NEOPIXEL':NEOPIXEL,
                     'LIGHT':LIGHT, 'PAUSE':PAUSE, 'GETTOUCH':GETTOUCH, 'TOUCHX':TOUCHX,
-                    'TOUCHY':TOUCHY, 'CLS':CLS, 'BEEP':BEEP, 'PLAY':PLAY}
+                    'TOUCHY':TOUCHY, 'CLS':CLS, 'BEEP':BEEP, 'PLAY':PLAY, 'PRINTAT':PRINTAT}
 
 
         # Functions
