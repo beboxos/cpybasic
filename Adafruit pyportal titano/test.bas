@@ -1,0 +1,26 @@
+10 CLS 
+20 FOR N = 0 TO 10 
+30 PRINTAT N 5 " Hello World!" 
+35 PAUSE 0.1 
+40 NEXT N 
+50 FOR N = 0 TO 10 
+55 X = 10 - N 
+60 PRINTAT X 5 " Hello World! " 
+70 PAUSE 0.1 
+80 NEXT N 
+90 PAUSE 2
+95 CLS
+100 FOR N = 0 TO 10
+110 PRINTAT 5 N "            "
+115 Y = N + 1
+120 PRINTAT 5 Y "Hello World!"
+130 PAUSE 0.1
+140 NEXT N
+150 FOR N = 0 TO 10
+160 Y = (10 - N) + 1
+170 PRINTAT 5 Y "            "
+180 Y = Y-1
+190 PRINTAT 5 Y "Hello World!"
+200 PAUSE 0.1
+210 NEXT N
+230 PRINT
