@@ -1,4 +1,7 @@
-
+try:
+    i2c.deinit()
+except:
+    pass
 
 """This class implements a BASIC interpreter that
 presents a prompt to the user. The user may input
@@ -23,22 +26,23 @@ import busio, board
 i2c = busio.I2C(board.SCL, board.SDA)
 while not i2c.try_lock():
     pass
-try:
-    cardkb = i2c.scan()[0]  # should return 95
-    if cardkb != 95:
-        print("!!! Check I2C config: " + str(i2c))
-        print("!!! CardKB not found. I2C device", cardkb,
-              "found instead.")
-        i2ckeyboard=False
-except:
-    i2ckeyboard=False
-
+cardkb = i2c.scan()[0]  # should return 95
+if cardkb != 95:
+    print("!!! Check I2C config: " + str(i2c))
+    print("!!! CardKB not found. I2C device", cardkb,
+          "found instead.")
+    exit(1)
+ 
 ESC = chr(27)
 NUL = '\x00'
 CR = "\r"
 LF = "\n"
 
+buffer=[]
+bufidx=0
+
 b = bytearray(1)
+
 
 def ReadKey():
     c = ''
@@ -47,20 +51,15 @@ def ReadKey():
         c = b.decode()
     except:
         c = b
-    if c==b'\xb5':
-        c=chr(27)+"[1A"
-    if c==b'\xb6':
-        c=chr(27)+"[1B"
-    if c==b'\xb7':
-        c=chr(27)+"[1C"
-    if c==b'\xb4':
-        c=chr(27)+"[1D"        
+           
     if c == CR:
         # convert CR return key to LF
         c = LF
     return c
 
 def InputFromKB(prompt):
+    global bufidx
+    global buffer
     key=''
     keyRead=''
     datainput=''
@@ -69,17 +68,56 @@ def InputFromKB(prompt):
             key=ReadKey()
             #key = keyRead[0]    
             #key = key[1]
-            
             if key!=NUL:
                 if key!="\n":
-                    print(key, end='')
-                    if key!='\x08':
-                        datainput+=key
-                    else:
-                        datainput=datainput[:-1]
-                        #print(key, end="")
-                        print(" ", end="")
-                        print(key, end="")
+                    if key==b'\xb5':
+                        #key up
+                        if len(buffer)!=0:
+                            if bufidx>0:
+                                bufidx=bufidx-1
+                            else:
+                                bufidx=0
+                            tmp=len(datainput)
+                            datainput=buffer[bufidx]
+                            print(chr(27)+"[2K", end="")
+                            print(chr(27)+"["+str(tmp)+"D", end="")
+                            print(" "*20, end="")
+                            print(chr(27)+"[2K", end="")
+                            print(chr(27)+"[20D", end="")                            
+                            print(datainput, end="")
+                    elif key==b'\xb6':
+                        #key down
+                        if len(buffer)!=0:
+                            if bufidx<len(buffer)-1:
+                                bufidx=bufidx+1
+                            else:
+                                bufidx=len(buffer)-1
+                            tmp=len(datainput)
+                            datainput=buffer[bufidx]
+                            print(chr(27)+"[2K", end="")
+                            print(chr(27)+"["+str(tmp)+"D", end="")
+                            print(" "*20, end="")
+                            print(chr(27)+"[2K", end="")
+                            print(chr(27)+"[20D", end="")                            
+                            print(datainput, end="")
+                    elif key == b'\xb7':
+                        #right
+                        pass
+                    elif key == b'\xb4':
+                        #left
+                        pass
+                    else:                            
+                        print(key, end='')
+                        if key!='\x08':
+                            datainput+=key
+                        else:
+                            datainput=datainput[:-1]
+                            #print(key, end="")
+                            print(" ", end="")
+                            print(key, end="")
+    
+    buffer.append(datainput)
+    bufidx = len(buffer)
     print()
     return datainput
 
