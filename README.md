@@ -39,3 +39,7 @@ BEEP & PLAY are experimental and buggy for now
 - graphics 
 - network support
 - and all we can imagine 
+
+Change Log:
+19.10.2021 : new functions PRINTAT, CLS 
+21.10.2021 : m5stack CardKB management improvement (keystroke history by pressing up/down + inline editing by using left/right key)
