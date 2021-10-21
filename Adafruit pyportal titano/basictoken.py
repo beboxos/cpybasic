@@ -130,6 +130,7 @@ class BASICToken:
         BEEP            = 97  # bip a sound BEEP Freq in Hz , duration in Sec to debug
         PLAY            = 98  # play note C1 to G6 to debug
         PRINTAT         = 99  # print at x y "text"
+        WAV            = 100  # play a wav file : WAVE filename
 
         # Displayable names for each token category
         catnames = ['EOF', 'LET', 'LIST', 'PRINT', 'RUN',
@@ -149,7 +150,7 @@ class BASICToken:
         'RNDINT', 'OPEN', 'HASH', 'CLOSE', 'FSEEK', 'APPEND',
         'OUTPUT', 'RESTORE', 'RNDINT', 'TAB', 'SEMICOLON',
         'LEFT', 'RIGHT', 'DIR', 'NEOPIXEL', 'LIGHT', 'PAUSE', 'GETTOUCH', 'TOUCHX', 'TOUCHY',
-        'CLS', 'BEEP', 'PLAY', 'PRINTAT']
+        'CLS', 'BEEP', 'PLAY', 'PRINTAT', 'WAV']
 
         smalltokens = {'=': ASSIGNOP, '(': LEFTPAREN, ')': RIGHTPAREN,
                        '+': PLUS, '-': MINUS, '*': TIMES, '/': DIVIDE,
@@ -188,7 +189,8 @@ class BASICToken:
                     'RESTORE': RESTORE, 'TAB': TAB,
                     'LEFT$': LEFT, 'RIGHT$': RIGHT, 'DIR':DIR, 'NEOPIXEL':NEOPIXEL,
                     'LIGHT':LIGHT, 'PAUSE':PAUSE, 'GETTOUCH':GETTOUCH, 'TOUCHX':TOUCHX,
-                    'TOUCHY':TOUCHY, 'CLS':CLS, 'BEEP':BEEP, 'PLAY':PLAY, 'PRINTAT':PRINTAT}
+                    'TOUCHY':TOUCHY, 'CLS':CLS, 'BEEP':BEEP, 'PLAY':PLAY, 'PRINTAT':PRINTAT,
+                    'WAV':WAV}
 
 
         # Functions

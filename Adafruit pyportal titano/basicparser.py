@@ -345,6 +345,9 @@ class BASICParser:
         elif self.__token.category == Token.PRINTAT:
             self.__printat()
             return None
+        elif self.__token.category == Token.WAV:
+            self.__wav()
+            return None        
         else:
             # Ignore comments, but raise an error
             # for anything else
@@ -374,7 +377,23 @@ class BASICParser:
             sine_wave.deinit()
             dac.deinit()
         else:
-            print("Missing parameters ? \nSyntax is BEEP Freq Time")            
+            print("Missing parameters ? \nSyntax is BEEP Freq Time")
+    def __wav(self):
+            self.__advance() # bypass BEEP 
+            self.__expr()    # compute value
+            filename = self.__operand_stack.pop()
+            speaker_enable = digitalio.DigitalInOut(board.SPEAKER_ENABLE)
+            speaker_enable.switch_to_output(value=True)
+            data = open(filename, "rb")
+            wav = audiocore.WaveFile(data)
+            a = audioio.AudioOut(board.A0)
+            a.play(wav)
+            while a.playing:
+                pass
+            wav.deinit()
+            a.deinit()
+            speaker_enable.deinit()
+            
     def __beep(self):
         if len(self.__tokenlist)==3:
             self.__advance() # bypass BEEP 

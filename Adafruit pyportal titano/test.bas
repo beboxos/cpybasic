@@ -1,4 +1,5 @@
 10 CLS 
+15 WAV "startup.wav"
 20 FOR N = 0 TO 10 
 30 PRINTAT N 5 " Hello World!" 
 35 PAUSE 0.1 
@@ -8,7 +9,7 @@
 60 PRINTAT X 5 " Hello World! " 
 70 PAUSE 0.1 
 80 NEXT N 
-90 PAUSE 2
+90 PAUSE 1
 95 CLS
 100 FOR N = 0 TO 10
 110 PRINTAT 5 N "            "
@@ -24,3 +25,7 @@
 200 PAUSE 0.1
 210 NEXT N
 230 PRINT
+240 PLAY "C4" 1
+250 PLAY "C5" 1
+260 PLAY "C3" 1
+
