@@ -11,6 +11,9 @@ again.
 orginal port : https://github.com/richpl/PyBasic
 
 Modified by BeBoX. 2021 for Adafruit titano
+on titano
+23 lines of text
+76 columns (usefull for PRINTAT)
 """
 
 from basictoken import BASICToken as Token
@@ -23,16 +26,23 @@ i2ckeyboard=True
 
 import os, microcontroller
 import busio, board
-i2c = busio.I2C(board.SCL, board.SDA)
-while not i2c.try_lock():
-    pass
-cardkb = i2c.scan()[0]  # should return 95
-if cardkb != 95:
-    print("!!! Check I2C config: " + str(i2c))
-    print("!!! CardKB not found. I2C device", cardkb,
-          "found instead.")
-    exit(1)
- 
+try:
+    i2c = busio.I2C(board.SCL, board.SDA)
+    while not i2c.try_lock():
+        pass
+except:
+    print("i2c init problem ...")
+    
+try:
+    cardkb = i2c.scan()[0]  # should return 95
+    if cardkb != 95:
+        print("!!! Check I2C config: " + str(i2c))
+        print("!!! CardKB not found. I2C device", cardkb,
+              "found instead.")
+        exit(1)
+except:
+    i2ckeyboard=False
+    
 ESC = chr(27)
 NUL = '\x00'
 CR = "\r"
@@ -40,6 +50,7 @@ LF = "\n"
 
 buffer=[]
 bufidx=0
+curseur=0
 
 b = bytearray(1)
 
@@ -60,14 +71,18 @@ def ReadKey():
 def InputFromKB(prompt):
     global bufidx
     global buffer
+    global curseur
+    buffer.append('')
+    bufidx=len(buffer)-1
     key=''
     keyRead=''
     datainput=''
     print(prompt, end='')
     while key!="\n":
-            key=ReadKey()
-            #key = keyRead[0]    
-            #key = key[1]
+            try:
+                key=ReadKey()
+            except:
+                pass
             if key!=NUL:
                 if key!="\n":
                     if key==b'\xb5':
@@ -96,51 +111,90 @@ def InputFromKB(prompt):
                             datainput=buffer[bufidx]
                             print(chr(27)+"[2K", end="")
                             print(chr(27)+"["+str(tmp)+"D", end="")
-                            print(" "*20, end="")
+                            print(" "*40, end="")
                             print(chr(27)+"[2K", end="")
-                            print(chr(27)+"[20D", end="")                            
+                            print(chr(27)+"[40D", end="")                            
                             print(datainput, end="")
                     elif key == b'\xb7':
                         #right
-                        pass
+                        try:
+                            print(datainput[curseur], end="")
+                        except:
+                            pass
+                        curseur+=1
+                        if curseur>len(datainput):
+                            curseur=len(datainput)
+                        else:
+                            if curseur!=len(datainput):
+                                print(" "+datainput[-(len(datainput)-curseur):], end="")
+                                print(chr(27)+"["+str((len(datainput)-curseur)+1)+"D", end="")
+                            else:
+                                print(" ", end="")
+                                print(chr(27)+"[1D", end="")
+                                
                     elif key == b'\xb4':
                         #left
-                        pass
+                        curseur-=1
+                        if curseur<0:
+                            curseur=0
+                        else:
+                            print(chr(27)+"[1D", end="")
+                            print(" "+datainput[-(len(datainput)-curseur):], end="")
+                            print(chr(27)+"["+str((len(datainput)-curseur)+1)+"D", end="")
                     else:                            
                         print(key, end='')
                         if key!='\x08':
-                            datainput+=key
+                            if curseur==len(datainput):
+                                datainput+=key
+                                curseur+=1
+                            else:
+                                #edition de ligne !!
+                                first=datainput[:curseur]
+                                end=datainput[curseur:]
+                                print(" "+end, end="")
+                                print(chr(27)+"["+str(len(end)+1)+"D", end="")
+                                datainput=first+key+end
+                                curseur+=1
                         else:
-                            datainput=datainput[:-1]
-                            #print(key, end="")
-                            print(" ", end="")
-                            print(key, end="")
+                            if curseur==len(datainput):
+                                datainput=datainput[:-1]
+                                curseur=curseur-1
+                                print(" ", end="")
+                                print(key, end="")
+                            else:
+                                #we delete not a the end, what an idea lol
+                                first=datainput[:curseur-1]
+                                end=datainput[curseur:]
+                                print(" "+end, end="")
+                                print(chr(27)+"["+str(len(end)+1)+"D", end="")
+                                datainput=first+end
+                                curseur=curseur-1
     
-    buffer.append(datainput)
-    bufidx = len(buffer)
-    print()
-    return datainput
 
+    buffer[bufidx]=datainput
+    #bufidx = len(buffer)
+    print()
+    curseur=0
+    return datainput
 #---------------------------------------------------
 
 def main():
 
     banner = (
     """
-  ___  _                 _  _    _ __  _  _  _    _               
- / __|(_) _ _  __  _  _ (_)| |_ | '_ \| || || |_ | |_   ___  _ _  
-| (__ | || '_|/ _|| || || ||  _|| .__/ \_. ||  _||   \ / _ \| ' \ 
- \___||_||_|  \__| \_._||_| \__||_|    |__/  \__||_||_|\___/|_||_|
-         ___  _  _  ___            _                  
-        | _ \| || || _ ) __ _  ___(_) __              
-        |  _/ \_. || _ \/ _` |(_-/| |/ _|        _    
-        |_|   |__/ |___/\__/_|/__/|_|\__|       (_)   
-_________________________________________________________________ 
-\____\____\____\____\____\____\____\____\____\____\____\____\____\ 
+    ___  _                 _  _    _ __  _  _  _    _               
+   / __|(_) _ _  __  _  _ (_)| |_ | '_ \| || || |_ | |_   ___  _ _  
+  | (__ | || '_|/ _|| || || ||  _|| .__/ \_. ||  _||   \ / _ \| ' \ 
+   \___||_||_|  \__| \_._||_| \__||_|    |__/  \__||_||_|\___/|_||_|
+           ___  _  _  ___            _                  
+          | _ \| || || _ ) __ _  ___(_) __              
+          |  _/ \_. || _ \/ _` |(_-/| |/ _|        _    
+          |_|   |__/ |___/\__/_|/__/|_|\__|       (_)   
+  _________________________________________________________________ 
+  \____\____\____\____\____\____\____\____\____\____\____\____\____\ 
                                                                   
 """)
-    for n in range(20):
-        print()
+    print(chr(27)+"[2J")
     print(banner)
     print("        Adafruit PyPortal Titano Edition by BeBoX (c)2021\r\n")
     lexer = Lexer()
