@@ -30,18 +30,28 @@ New commands added :
  - PLAY : make a note ex. 10 PLAY C#2 1, play do # 2nd octave during 1 sec
  - PRINTAT : print a string at coordinate ex: 10 PRINTAT 5 10 "Hello World" #add on 19.10.2021
  - WAV : play a wav file usage WAVE "filename"
+ - GSCREEN "on" / GSCREEN "OFF" : show or hide graphic screen 
+ - GCLS [color] : clear graphic screen , with optional color or black if blank
+ - GLINE x,y,x2,y2,color : draw a line from x,y to x1,y1
+ - GRECT x,y,width,height,fill color,outline color, outline width: draw a rectangle shape. use none for transparent color
+ - GRRECT x,y,width,height,radius, fill color,outline color, ouline width: draw a round rectangle shape use none for transparent color
+ - GTRIANGLE x0,y0,x1,y1,x2,y2,fill color, outline color : draw a triangle shape, use none for transparent color
+ - GPRINT x,y,"TEXT"[,size,color,bgcolor] : print a text at x,y optional multiplier size, font color, background color
+ - GCIRCLE x,y,radius,fill color, outline color, outline width : draw a circle shape at x,y 
 
 BEEP & PLAY are experimental and buggy for now
 
 - todo list : 
 - fix all bugs :) 
-- Play Wav files from disk (in progress)
 - SD card support
-- graphics 
+- graphics image load , sprites ?
 - network support
 - and all we can imagine 
 
 Change Log:
-19.10.2021 : new functions PRINTAT, CLS 
-21.10.2021 : m5stack CardKB management improvement (keystroke history by pressing up/down + inline editing by using left/right key)
-22.10.2021 : WAV function let you play a wave sound file
+- 19.10.2021 : new functions PRINTAT, CLS 
+- 21.10.2021 : m5stack CardKB management improvement (keystroke history by pressing up/down + inline editing by using left/right key)
+- 22.10.2021 : WAV function let you play a wave sound file
+- 24.10.2021 : Graphic news feature , gscreen, gcls, gline, grect, gtriangle,gprint ...
+
+
