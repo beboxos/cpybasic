@@ -590,7 +590,7 @@ class BASICParser:
             self.__advance() # bypass BEEP 
             self.__expr()    # compute value
             freq = str(self.__operand_stack.pop()).upper() # put in freq and pop
-            print(freq)
+            #print(freq)
             self.__expr()    # compute value
             duration = self.__operand_stack.pop() # put in duration and pop
             freq = note[freq]
@@ -2110,14 +2110,22 @@ class BASICParser:
             return str(value)
 
         elif category == Token.VAL:
+            ctrl=False
+            numeric=0
             try:
-                numeric = float(value)
-                if numeric.is_integer():
-                    return int(numeric)
+                numeric = int(value)
+                ctrl=True
+            except:
+                ctrl=False
+            if ctrl==False:
+                try:
+                    numeric = float(value)
+                    ctrl=True
+                except:
+                    ctrl=False
+            if ctrl==True:
                 return numeric
-
-            # Like other BASIC variants, non-numeric strings return 0
-            except ValueError:
+            else:
                 return 0
 
         elif category == Token.LEN:
