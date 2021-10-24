@@ -24,6 +24,16 @@ from time import monotonic
 import neopixel, analogio, board, time, digitalio
 import audiocore,audioio,array
 import adafruit_touchscreen
+#Graphics libs
+import displayio, terminalio
+from adafruit_display_shapes.roundrect import RoundRect
+from adafruit_display_shapes.rect import Rect
+from adafruit_display_shapes.circle import Circle
+from adafruit_display_shapes.triangle import Triangle
+from adafruit_display_shapes.line import Line
+from adafruit_display_text import bitmap_label
+display = board.DISPLAY
+graphic = displayio.Group()
 pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
 pixels[0] = 0x000000 #set neopixel to black
 light = analogio.AnalogIn(board.LIGHT)
@@ -103,6 +113,7 @@ note = {'C1':32,
     'F6':1397,
     'F#6':1480,
     'G6':1568}
+
 """Implements a BASIC array, which may have up
 to three dimensions of fixed size.
 
@@ -347,7 +358,31 @@ class BASICParser:
             return None
         elif self.__token.category == Token.WAV:
             self.__wav()
-            return None        
+            return None
+        elif self.__token.category == Token.GSCREEN:
+            self.__gscreen()
+            return None
+        elif self.__token.category == Token.GCLS:
+            self.__gcls()
+            return None
+        elif self.__token.category == Token.GLINE:
+            self.__gline()
+            return None
+        elif self.__token.category == Token.GRECT:
+            self.__grect()
+            return None
+        elif self.__token.category == Token.GTRIANGLE:
+            self.__gtriangle()
+            return None
+        elif self.__token.category == Token.GPRINT:
+            self.__gprint()
+            return None
+        elif self.__token.category == Token.GCIRCLE:
+            self.__gcircle()
+            return None
+        elif self.__token.category == Token.GRRECT:
+            self.__grrect()
+            return None
         else:
             # Ignore comments, but raise an error
             # for anything else
@@ -356,6 +391,200 @@ class BASICParser:
                                    + str(self.__line_number))
 
 #BeBoX new command def ********************************************************
+    def __gprint(self):
+        size=-1
+        color=-1
+        bgcolor=-1
+        self.__advance()
+        self.__expr()
+        x = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        text = str(self.__operand_stack.pop()).upper()
+        try:
+            self.__consume(Token.COMMA)
+            self.__expr()
+            size = self.__operand_stack.pop()
+        except:
+            pass
+        try:
+            self.__consume(Token.COMMA)
+            self.__expr()
+            color = self.__operand_stack.pop()
+        except:
+            pass
+        try:
+            self.__consume(Token.COMMA)
+            self.__expr()
+            bgcolor = self.__operand_stack.pop()
+        except:
+            pass
+        text_area = bitmap_label.Label(terminalio.FONT, text=text)
+        text_area.x = x
+        text_area.y = y
+        if size!=-1:
+            text_area.scale = size
+        if color!=-1:
+            text_area.color = color
+        if bgcolor!=-1:
+            text_area.background_color = bgcolor
+        graphic.append(text_area)
+
+    def __gline(self):
+        self.__advance()
+        self.__expr()
+        x0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        x1 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y1 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        color = self.__operand_stack.pop()
+        ligne = Line(x0,y0,x1,y1,color)
+        graphic.append(ligne)
+    def __grect(self):
+        self.__advance()
+        self.__expr()
+        x0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        width = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        height = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        fillcolor = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        outlinecolor = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        borderstroke = self.__operand_stack.pop()
+        ligne = Rect(x0,y0,width,height,fill=fillcolor,outline=outlinecolor,stroke=borderstroke)
+        graphic.append(ligne)
+    def __grrect(self):
+        self.__advance()
+        self.__expr()
+        x0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        width = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        height = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        radius = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        fillcolor = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        outlinecolor = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        borderstroke = self.__operand_stack.pop()
+        ligne = RoundRect(x0,y0,width,height,radius,fill=fillcolor,outline=outlinecolor,stroke=borderstroke)
+        graphic.append(ligne)        
+        
+    def __gcircle(self):
+        self.__advance()
+        self.__expr()
+        x0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        radius = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        fillcolor = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        outlinecolor = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        borderstroke = self.__operand_stack.pop()
+        ligne = Circle(x0,y0,radius,fill=fillcolor,outline=outlinecolor,stroke=borderstroke)
+        graphic.append(ligne)
+        
+    def __gtriangle(self):
+        self.__advance()
+        self.__expr()
+        x0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y0 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        x1 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y1 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        x2 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        y2 = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        fillcolor = self.__operand_stack.pop()
+        self.__consume(Token.COMMA)
+        self.__expr()
+        outlinecolor = self.__operand_stack.pop()
+        ligne = Triangle(x0,y0,x1,y1,x2,y2,fill=fillcolor,outline=outlinecolor)
+        graphic.append(ligne)        
+        
+    def __gscreen(self):
+        #if on display.show(graphic)
+        #if off display.show(None)
+        self.__advance()
+        self.__expr()
+        param = str(self.__operand_stack.pop()).upper()
+        if param == "ON":
+            display.show(graphic)
+        elif param == "OFF":
+            display.show(None)
+        else:
+            print("Invalid parameter on or off only")
+    def __gcls(self):
+        #print(len(graphic))
+        if len(graphic)>0:
+            for n in range(len(graphic)):
+                try:
+                    graphic.pop()
+                except:
+                    pass
+        
+        try:
+            self.__advance()
+            self.__expr()
+            color= self.__operand_stack.pop()
+            #print (color)
+            if color:
+                background = Rect(0,0, display.width, display.height, fill=color )
+                graphic.append(background)
+        except:
+            pass
+            
     def __play(self):
         if len(self.__tokenlist)==3:
             self.__advance() # bypass BEEP 
@@ -1505,7 +1734,31 @@ class BASICParser:
         if category == Token.PI:
             return math.pi
 
-#BeBoX Add on part New Functions part 
+#BeBoX Add on part New Functions part
+        if category == Token.WHITE:
+            return 0xFFFFFF
+        if category == Token.BLACK:
+            return 0x000000
+        if category == Token.RED:
+            return 0xFF0000
+        if category == Token.ORANGE:
+            return 0xFFA500
+        if category == Token.YELLOW:
+            return 0xFFFF00
+        if category == Token.GREEN:
+            return 0x00FF00
+        if category == Token.BLUE:
+            return 0x0000FF
+        if category == Token.PURPLE:
+            return 0x800080
+        if category == Token.PINK:
+            return 0xFFC0CB
+        if category == Token.GRAY:
+            return 0x888888
+        if category == Token.GREY:
+            return 0x444444
+        if category == Token.NONE:
+            return None
         if category == Token.LIGHT:
             return light.value
         

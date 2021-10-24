@@ -131,6 +131,28 @@ class BASICToken:
         PLAY            = 98  # play note C1 to G6 to debug
         PRINTAT         = 99  # print at x y "text"
         WAV            = 100  # play a wav file : WAVE filename
+        GSCREEN        = 101  # show/hide Graphic screen ON / OFF
+        GCIRCLE        = 102  # draw a circle
+        GLINE          = 103  # draw a line
+        GRECT          = 104  # draw a rectangle
+        GTRIANGLE      = 105  # draw a triangle
+        GPRINT         = 106  # print text on graphic screen x,y,"text",size,color, bgcolor
+        WHITE          = 107  # WHITE color table
+        BLACK          = 108  # BLACK color table
+        RED            = 109  # RED
+        ORANGE         = 110  # ORANGE
+        YELLOW         = 111  #
+        GREEN          = 112  #
+        BLUE           = 113  #
+        PURPLE         = 114  #
+        PINK           = 115  #
+        GRAY           = 116  #
+        GREY           = 117  #
+        GCLS           = 118  # Graphic Clear Screen
+        NONE           = 119  # return None
+        GRRECT         = 120  # Graphic Round Rectangle
+        
+        
 
         # Displayable names for each token category
         catnames = ['EOF', 'LET', 'LIST', 'PRINT', 'RUN',
@@ -150,7 +172,9 @@ class BASICToken:
         'RNDINT', 'OPEN', 'HASH', 'CLOSE', 'FSEEK', 'APPEND',
         'OUTPUT', 'RESTORE', 'RNDINT', 'TAB', 'SEMICOLON',
         'LEFT', 'RIGHT', 'DIR', 'NEOPIXEL', 'LIGHT', 'PAUSE', 'GETTOUCH', 'TOUCHX', 'TOUCHY',
-        'CLS', 'BEEP', 'PLAY', 'PRINTAT', 'WAV']
+        'CLS', 'BEEP', 'PLAY', 'PRINTAT', 'WAV','GSCREEN', 'GCIRCLE','GLINE','GRECT','GTRIANGLE',
+        'GPRINT', 'WHITE','BLACK','RED','ORANGE','YELLOW','GREEN',
+        'BLUE','PURPLE','PINK','GRAY','GREY', 'GCLS', 'NONE', 'GRRECT']
 
         smalltokens = {'=': ASSIGNOP, '(': LEFTPAREN, ')': RIGHTPAREN,
                        '+': PLUS, '-': MINUS, '*': TIMES, '/': DIVIDE,
@@ -190,14 +214,19 @@ class BASICToken:
                     'LEFT$': LEFT, 'RIGHT$': RIGHT, 'DIR':DIR, 'NEOPIXEL':NEOPIXEL,
                     'LIGHT':LIGHT, 'PAUSE':PAUSE, 'GETTOUCH':GETTOUCH, 'TOUCHX':TOUCHX,
                     'TOUCHY':TOUCHY, 'CLS':CLS, 'BEEP':BEEP, 'PLAY':PLAY, 'PRINTAT':PRINTAT,
-                    'WAV':WAV}
+                    'WAV':WAV,'GSCREEN':GSCREEN,'GCIRCLE':GCIRCLE,'GLINE':GLINE,'GRECT':GRECT,
+                    'GTRIANGLE':GTRIANGLE,'GPRINT':GPRINT,
+                    'WHITE':WHITE,'BLACK':BLACK,'RED':RED,'ORANGE':ORANGE,'YELLOW':YELLOW,
+                    'GREEN':GREEN, 'BLUE':BLUE,'PURPLE':PURPLE,'PINK':PINK,'GRAY':GRAY,'GREY':GREY ,
+                    'GCLS':GCLS, 'NONE':NONE,'GRRECT':GRRECT}
 
 
         # Functions
         functions = {ABS, ATN, COS, EXP, INT, LOG, POW, RND, SIN, SQR, TAN,
                      CHR, ASC, MID, TERNARY, STR, VAL, LEN, UPPER, LOWER,
                      ROUND, MAX, MIN, INSTR, PI, RNDINT, TAB, LEFT, RIGHT, LIGHT, GETTOUCH,
-                     TOUCHX, TOUCHY}
+                     TOUCHX, TOUCHY,WHITE,BLACK,RED,ORANGE,YELLOW,GREEN,
+                     BLUE,PURPLE,PINK,GRAY,GREY, NONE}
 
         def __init__(self, column, category, lexeme):
 
