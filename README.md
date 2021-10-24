@@ -53,5 +53,6 @@ Change Log:
 - 21.10.2021 : m5stack CardKB management improvement (keystroke history by pressing up/down + inline editing by using left/right key)
 - 22.10.2021 : WAV function let you play a wave sound file
 - 24.10.2021 : Graphic news feature , gscreen, gcls, gline, grect, gtriangle,gprint ...
+- 24.10.2021 : fixed val() function to match Circuitpython. added example.bas to help you manage all new functions
 
 
