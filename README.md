@@ -6,15 +6,15 @@ Current version work only for Adafruit titano & CardKB for now.
 The [origninal PyBasic](https://github.com/richpl/PyBasic) was designed to work on "Normal Python".
 But microcontrollers avec spécific things like neopixels, touchscreens etc.
 
-The current version is made and developped around the[Adafruit PyPortal Titano](https://learn.adafruit.com/adafruit-pyportal-titano).
+The current version is made and developped around the [Adafruit PyPortal Titano](https://learn.adafruit.com/adafruit-pyportal-titano).
 Why ? 
-Because i have it and because this deveice is enough complete : network, touchscreen, 480x320 color lcd, sound, light sensor, microSD 
+Because I have it and because this device is enough complete : network, touchscreen, 480x320 color lcd, sound, light sensor, microSD 
 if a [m5stack i2c CardKB](https://shop.m5stack.com/products/cardkb-mini-keyboard) is attached to the Pyportal titano, it will be used 
-for input keystroke and that make the device fully usable "On the Road". If there is no keyboard attached, input comme from computer
+for input keystroke and that make the device fully usable "On the Road". If there is no keyboard attached, input come from computer
 over REPL serial interface.
 ![img](https://github.com/beboxos/circuitpython/blob/main/images/pybasic2.jpeg)
 
-Later, will be ported to other devices like WIO terminal, regular pyportal etc... 
+Later, will be ported to other devices like WIO terminal, regular PyPortal etc... 
 
 New commands added : 
 
@@ -54,5 +54,3 @@ Change Log:
 - 22.10.2021 : WAV function let you play a wave sound file
 - 24.10.2021 : Graphic news feature , gscreen, gcls, gline, grect, gtriangle,gprint ...
 - 24.10.2021 : fixed val() function to match Circuitpython. added example.bas to help you manage all new functions
-
-
