@@ -2,9 +2,11 @@
 ## Circuitpython version of PyBasic for microcontrollers
 ![img](https://github.com/beboxos/circuitpython/blob/main/images/pybasic1.jpeg)
 
-Current version work only for Adafruit titano & CardKB for now.
+Current version work only for Adafruit PyPortal Titano with or without CardKB.
+It should work on PyPortal and PyPortal Pynt if autodetect code is working.
+
 The [origninal PyBasic](https://github.com/richpl/PyBasic) was designed to work on "Normal Python".
-But microcontrollers avec spécific things like neopixels, touchscreens etc.
+But microcontrollers with specific things like neopixels, touchscreens etc.
 
 The current version is made and developped around the [Adafruit PyPortal Titano](https://learn.adafruit.com/adafruit-pyportal-titano).
 Why ? 
@@ -54,3 +56,5 @@ Change Log:
 - 22.10.2021 : WAV function let you play a wave sound file
 - 24.10.2021 : Graphic news feature , gscreen, gcls, gline, grect, gtriangle,gprint ...
 - 24.10.2021 : fixed val() function to match Circuitpython. added example.bas to help you manage all new functions
+- 02.11.2021 : David Glaude add non Titano PyPortal detection
+
