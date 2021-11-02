@@ -37,14 +37,29 @@ graphic = displayio.Group()
 pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
 pixels[0] = 0x000000 #set neopixel to black
 light = analogio.AnalogIn(board.LIGHT)
-ts = adafruit_touchscreen.Touchscreen(
-    board.TOUCH_XL,
-    board.TOUCH_XR,
-    board.TOUCH_YD,
-    board.TOUCH_YU,
-    calibration=((5200, 59000), (5800, 57000)),
-    size=(480, 320),
-)
+
+import os
+isTitano = os.uname().machine.find("Titano") != -1
+
+if isTitano:
+    ts = adafruit_touchscreen.Touchscreen(
+        board.TOUCH_XL,
+        board.TOUCH_XR,
+        board.TOUCH_YD,
+        board.TOUCH_YU,
+        calibration=((5200, 59000), (5800, 57000)),
+        size=(480, 320),
+    )
+else:
+    ts = adafruit_touchscreen.Touchscreen(
+        board.TOUCH_XL,
+        board.TOUCH_XR,
+        board.TOUCH_YD,
+        board.TOUCH_YU,
+        calibration=((5200, 59000), (5800, 57000)),
+        size=(320, 240),
+    )
+
 note = {'C1':32,
     'C#1':34,
     'D1':36,
