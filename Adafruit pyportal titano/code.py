@@ -14,7 +14,16 @@ Modified by BeBoX. 2021 for Adafruit titano
 on titano
 23 lines of text
 76 columns (usefull for PRINTAT)
+
+Modified by David Glaude. 2021 for detecting and adapting between PyPortal and PyPortal Titano
+on PyPortal and PyPortal Pynt
+17 lines of text
+50 columns (usefull for PRINTAT)
 """
+
+import os
+isTitano = os.uname().machine.find("Titano") != -1
+print("Titano check: ", isTitano)
 
 from basictoken import BASICToken as Token
 from lexer import Lexer
@@ -34,15 +43,16 @@ except:
     print("i2c init problem ...")
     
 try:
-    cardkb = i2c.scan()[0]  # should return 95
-    if cardkb != 95:
+    cardkb = i2c.scan()  # should return a list with a 95 in
+    if 95 in cardkb:     # This trick should work both on PyPortal Titano and
+        cardkb = 95      # and simple PyPortal (that has and additional ADT7410 on I2C bus)
+    else:
         print("!!! Check I2C config: " + str(i2c))
-        print("!!! CardKB not found. I2C device", cardkb,
-              "found instead.")
+        print("!!! CardKB not found. I2C device list:", cardkb)
         exit(1)
 except:
-    i2ckeyboard=False
-    
+    i2ckeyboard=False    
+
 ESC = chr(27)
 NUL = '\x00'
 CR = "\r"
@@ -180,7 +190,8 @@ def InputFromKB(prompt):
 
 def main():
 
-    banner = (
+    if isTitano:
+        banner = (
     """
     ___  _                 _  _    _ __  _  _  _    _               
    / __|(_) _ _  __  _  _ (_)| |_ | '_ \| || || |_ | |_   ___  _ _  
@@ -194,9 +205,30 @@ def main():
   \____\____\____\____\____\____\____\____\____\____\____\____\____\ 
                                                                   
 """)
+    else:
+        banner = (
+    """
+   ___  _                 _  _
+  / __|(_) _ _  __  _  _ (_)| |_
+ | (__ | || '_|/ _|| || || ||  _|
+  \___||_||_|  \__| \_._||_| \__|
+   _ __  _  _  _    _
+  | '_ \| || || |_ | |_   ___  _ _
+  | .__/ \_. ||  _||   \ / _ \| ' \\
+  |_|    |__/  \__||_||_|\___/|_||_|
+    ___  _  _  ___            _
+   | _ \| || || _ ) __ _  ___(_) __
+   |  _/ \_. || _ \/ _` |(_-/| |/ _|
+   |_|   |__/ |___/\__/_|/__/|_|\__|
+  ___________________________________
+  \____\____\____\____\____\____\____\\
+""")
     print(chr(27)+"[2J")
     print(banner)
-    print("        Adafruit PyPortal Titano Edition by BeBoX (c)2021\r\n")
+    if isTitano:
+        print("        Adafruit PyPortal Titano Edition by BeBoX (c)2021\r\n")
+    else:
+        print("Adafruit PyPortal Edition by BeBoX (c)2021\r\n")
     lexer = Lexer()
     program = Program()
     
